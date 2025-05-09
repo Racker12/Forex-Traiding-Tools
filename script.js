@@ -22,20 +22,33 @@ function updateSessions() {
     const open = session.open;
     const close = session.close;
 
-    let isOpen = false;
+    let statusColor = 'red'; // default: geschlossen
 
-    if (open < close) {
-      isOpen = localTime >= open && localTime < close;
+    const timeToOpen = ((open - localTime + 24) % 24);
+    const timeToClose = ((close - localTime + 24) % 24);
+
+    const isOpen = open < close
+      ? localTime >= open && localTime < close
+      : localTime >= open || localTime < close;
+
+    if (isOpen) {
+      if (timeToClose <= 1) {
+        statusColor = 'orange'; // kurz vor Schließung
+      } else {
+        statusColor = 'green'; // aktiv
+      }
     } else {
-      isOpen = localTime >= open || localTime < close;
+      if (timeToOpen <= 1) {
+        statusColor = 'yellow'; // bald offen
+      } else {
+        statusColor = 'red'; // geschlossen
+      }
     }
-
-    const color = isOpen ? 'green' : 'red';
 
     const span = document.createElement('span');
     span.className = 'session';
     span.innerHTML = `
-      <div class="status" style="background-color: ${color}"></div>
+      <div class="status" style="background-color: ${statusColor}"></div>
       ${session.name}
     `;
     sessionsDiv.appendChild(span);
@@ -117,6 +130,10 @@ window.addEventListener("DOMContentLoaded", () => {
     "save_image": false,
     "studies": [],
   });
+
+  updateSessions();
+  setInterval(updateSessions, 60000);
+});
 
   updateSessions();
   setInterval(updateSessions, 60000);
