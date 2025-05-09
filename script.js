@@ -1,8 +1,8 @@
 const sessionTimes = [
-  { name: 'Sydney', open: 23, close: 8 },
-  { name: 'Asia', open: 2, close: 11 },
-  { name: 'London', open: 9, close: 18 },
-  { name: 'New York', open: 13.5, close: 20 }
+  { name: 'Sydney', open: 22, close: 7 },
+  { name: 'Asia', open: 1, close: 10 },
+  { name: 'London', open: 9, close: 17 },
+  { name: 'New York', open: 13, close: 22 }
 ];
 
 function updateSessions() {
