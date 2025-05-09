@@ -134,8 +134,3 @@ window.addEventListener("DOMContentLoaded", () => {
   updateSessions();
   setInterval(updateSessions, 60000);
 });
-
-  updateSessions();
-  setInterval(updateSessions, 60000);
-});
-
