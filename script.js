@@ -2,35 +2,20 @@ const sessionTimes = [
   { name: 'Sydney', open: 23, close: 8 },
   { name: 'Asia', open: 2, close: 11 },
   { name: 'London', open: 9, close: 18 },
-  { name: 'New York', open: 21.5, close: 4 }
+  { name: 'New York', open: 13.5, close: 20 }
 ];
 
-// Zuverlässige DST-Erkennung für Deutschland
-function isDST(date = new Date()) {
-  const year = date.getFullYear();
-
-  // Letzter Sonntag im März
-  const march = new Date(year, 2, 31);
-  march.setDate(march.getDate() - march.getDay());
-
-  // Letzter Sonntag im Oktober
-  const october = new Date(year, 9, 31);
-  october.setDate(october.getDate() - october.getDay());
-
-  return date >= march && date < october;
-}
-
 function updateSessions() {
-  const now = new Date();
-  const utcHour = now.getUTCHours();
-  const utcMin = now.getUTCMinutes();
-  const utcTotal = utcHour + utcMin / 60;
+  const offsetMinutes = new Date().getTimezoneOffset();
+  const offsetHours = -offsetMinutes / 60;
 
-  const isInDST = isDST();
-  const germanyOffset = isInDST ? 2 : 1; // MESZ = UTC+2, MEZ = UTC+1
-  const germanTime = (utcTotal + germanyOffset + 24) % 24;
+  const now = new Date();
+  const localHour = now.getUTCHours() + offsetHours;
+  const localMin = now.getUTCMinutes();
+  const localTime = (localHour + localMin / 60 + 24) % 24;
 
   const sessionsDiv = document.getElementById('sessions');
+  if (!sessionsDiv) return;
   sessionsDiv.innerHTML = '';
 
   sessionTimes.forEach(session => {
@@ -40,10 +25,9 @@ function updateSessions() {
     let isOpen = false;
 
     if (open < close) {
-      isOpen = germanTime >= open && germanTime < close;
+      isOpen = localTime >= open && localTime < close;
     } else {
-      // Öffnung über Mitternacht (z. B. New York 21:30 – 04:00)
-      isOpen = germanTime >= open || germanTime < close;
+      isOpen = localTime >= open || localTime < close;
     }
 
     const color = isOpen ? 'green' : 'red';
@@ -58,7 +42,6 @@ function updateSessions() {
   });
 }
 
-// Funktionen für Navigation
 function openApp(id) {
   document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -134,8 +117,8 @@ window.addEventListener("DOMContentLoaded", () => {
     "save_image": false,
     "studies": [],
   });
+
+  updateSessions();
+  setInterval(updateSessions, 60000);
 });
 
-// Sitzungen jede Minute aktualisieren
-setInterval(updateSessions, 60000);
-updateSessions();
