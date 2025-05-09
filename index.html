@@ -16,7 +16,8 @@
     <div id="home" class="screen active">
       <div class="app" onclick="openApp('slApp')">Forex SL Rechner</div>
       <div class="app" onclick="openApp('newsApp')">Forex News</div>
-      <div class="app" onclick="openApp('tradingApp')">Live Charts</div> <!-- NEU -->
+      <div class="app" onclick="openApp('tradingApp')">Live Charts</div>
+      <div class="app" onclick="openApp('ftmoApp')">FTMO-Acc</div>
     </div>
 
     <div id="slApp" class="screen">
@@ -63,7 +64,13 @@
       <p><a href="https://www.forexfactory.com" target="_blank" class="external-link">ForexFactory öffnen</a></p>
     </div>
 
-    <div id="tradingApp" class="screen"> <!-- NEU -->
+    <div id="ftmoApp" class="screen">
+      <button class="back-btn" onclick="goHome()">⬅ Home</button>
+      <h2>FTMO Account</h2>
+      <p><a href="https://trader.ftmo.com/accounts-overview" target="_blank" class="external-link">FTMO öffnen</a></p>
+    </div>
+
+    <div id="tradingApp" class="screen">
       <button class="back-btn" onclick="goHome()">⬅ Home</button>
       <h2>Live Forex Charts</h2>
       <div class="tv-widget-container">
@@ -86,7 +93,6 @@
     </div>
   </main>
 
-  <!-- TradingView Widget Script -->
   <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
   <script src="script.js"></script>
 </body>
