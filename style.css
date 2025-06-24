@@ -1,42 +1,18 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: sans-serif;
-}
-
 body {
+  margin: 0;
+  font-family: Arial, sans-serif;
   background-color: #121212;
-  color: #eee;
-  min-height: 100vh;
+  color: #f1f1f1;
 }
 
 header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
   background-color: #1e1e1e;
-  border-bottom: 1px solid #333;
-}
-
-.sessions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  font-size: 0.85rem;
-}
-
-.session {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.session .status {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
+  padding: 1rem;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff;
+  border-bottom: 2px solid #333;
 }
 
 main {
@@ -45,61 +21,140 @@ main {
 
 .screen {
   display: none;
-  flex-direction: column;
-  gap: 1rem;
 }
 
 .screen.active {
-  display: flex;
+  display: block;
 }
 
 .app {
-  background-color: #222;
-  padding: 1.5rem;
-  margin-bottom: 1rem;
-  border-radius: 12px;
+  background-color: #2c2c2c;
+  padding: 1rem;
+  margin: 1rem 0;
   text-align: center;
   cursor: pointer;
-  box-shadow: 0 2px 5px #000;
-  transition: background 0.2s;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  transition: background 0.3s;
+  border: 1px solid #444;
 }
 
 .app:hover {
-  background-color: #333;
-}
-
-.back-btn {
-  align-self: flex-start;
-  margin-bottom: 1rem;
-  padding: 0.5rem 1rem;
-  background-color: #333;
-  border: none;
-  color: #eee;
-  cursor: pointer;
-  border-radius: 5px;
+  background-color: #3d3d3d;
 }
 
 label {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 1rem;
+  display: block;
+  margin: 1rem 0 0.5rem;
+  font-weight: bold;
 }
 
-input, select, button {
+input, select {
   padding: 0.5rem;
-  background: #1e1e1e;
-  border: 1px solid #444;
-  color: #eee;
+  font-size: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+  background: #222;
+  color: #fff;
+  border: 1px solid #555;
   border-radius: 5px;
-  margin-top: 0.3rem;
 }
 
 button {
+  margin-top: 1rem;
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
   cursor: pointer;
+  background-color: #4eaaff;
+  color: #000;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background-color: #77c8ff;
+}
+
+.back-btn {
+  background-color: #555;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.sessions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.session {
+  background-color: #222;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.9rem;
+}
+
+.status {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
 }
 
 .external-link {
   color: #4eaaff;
-  text-decoration: underline;
-  font-size: 1.1rem;
+  text-decoration: none;
+  font-weight: bold;
 }
+
+.external-link:hover {
+  text-decoration: underline;
+}
+
+/* Tabs for Nvidia */
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.tab-btn {
+  padding: 0.7rem 1.2rem;
+  background: #333;
+  border: none;
+  color: #eee;
+  cursor: pointer;
+  border-radius: 8px 8px 0 0;
+  font-weight: bold;
+}
+
+.tab-btn.active {
+  background: #4eaaff;
+  color: #000;
+}
+
+.tab-content {
+  display: none;
+  background: #1e1e1e;
+  padding: 1rem;
+  border: 1px solid #333;
+  border-radius: 0 8px 8px 8px;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+#result {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #222;
+  border: 1px solid #333;
+  border-radius: 5px;
+}
+
