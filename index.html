@@ -1,56 +1,59 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Forex Tools</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trading Tools</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <h1>Forex Tools</h1>
+    <h1>Trading Tools</h1>
     <div id="sessions" class="sessions"></div>
   </header>
 
   <main>
     <div id="home" class="screen active">
-      <div class="app" onclick="openApp('slApp')">Forex SL Rechner</div>
-      <div class="app" onclick="openApp('newsApp')">Forex News</div>
-      <div class="app" onclick="openApp('tradingApp')">Live Charts</div>
-      <div class="app" onclick="openApp('ftmoApp')">FTMO-Acc</div>
+      <div class="app" onclick="openApp('nvidiaApp')">Nvidia Trading</div>
+      <div class="app" onclick="openApp('forexApp')">Forex Trading</div>
     </div>
 
+    <!-- Forex -->
+    <div id="forexApp" class="screen">
+      <button class="back-btn" onclick="goHome()">⬅ Zurück</button>
+      <h2>Forex Trading</h2>
+      <div class="app" onclick="openApp('slApp')">Forex SL Rechner</div>
+      <div class="app" onclick="openApp('newsApp')">Forex News</div>
+      <div class="app" onclick="openApp('chartApp')">Live Charts</div>
+      <div class="app" onclick="openApp('ftmoApp')">FTMO Account</div>
+    </div>
+
+    <!-- SL-Rechner -->
     <div id="slApp" class="screen">
-      <button class="back-btn" onclick="goHome()">⬅ Home</button>
+      <button class="back-btn" onclick="openApp('forexApp')">⬅ Zurück</button>
       <h2>Forex SL Rechner</h2>
-      <label>Handelspaar:
+      <label>Währungspaar:
         <select id="pair">
-          <option>EUR/USD</option>
-          <option>USD/JPY</option>
-          <option>GBP/USD</option>
-          <option>USD/CHF</option>
-          <option>AUD/USD</option>
-          <option>USD/CAD</option>
-          <option>NZD/USD</option>
-          <option>EUR/JPY</option>
-          <option>GBP/JPY</option>
-          <option>EUR/GBP</option>
+          <option value="EUR/USD">EUR/USD</option>
+          <option value="GBP/USD">GBP/USD</option>
+          <option value="USD/JPY">USD/JPY</option>
+          <option value="USD/CHF">USD/CHF</option>
         </select>
       </label>
 
-      <label>Gewünschter SL-Betrag:
-        <input type="number" id="slValue" placeholder="z.B. 50"/>
+      <label>Gewünschter Verlust (in EUR/USD):
+        <input type="number" id="slValue" placeholder="z. B. 100">
         <select id="slCurrency">
-          <option>EUR</option>
-          <option>USD</option>
+          <option value="EUR">EUR</option>
+          <option value="USD">USD</option>
         </select>
       </label>
 
-      <label>SL-Abstand:
-        <input type="number" id="slDistance" placeholder="z.B. 20"/>
+      <label>Abstand zum aktuellen Kurs:
+        <input type="number" id="slDistance" placeholder="z. B. 0.5">
         <select id="slType">
-          <option value="pips">Pips</option>
           <option value="percent">Prozent</option>
+          <option value="pips">Pips</option>
         </select>
       </label>
 
@@ -58,20 +61,16 @@
       <div id="result"></div>
     </div>
 
+    <!-- News -->
     <div id="newsApp" class="screen">
-      <button class="back-btn" onclick="goHome()">⬅ Home</button>
-      <h2>News</h2>
-      <p><a href="https://www.forexfactory.com" target="_blank" class="external-link">ForexFactory öffnen</a></p>
+      <button class="back-btn" onclick="openApp('forexApp')">⬅ Zurück</button>
+      <h2>Forex News</h2>
+      <p><a href="https://www.forexfactory.com" target="_blank" class="external-link">Forex Factory öffnen</a></p>
     </div>
 
-    <div id="ftmoApp" class="screen">
-      <button class="back-btn" onclick="goHome()">⬅ Home</button>
-      <h2>FTMO Account</h2>
-      <p><a href="https://trader.ftmo.com/accounts-overview" target="_blank" class="external-link">FTMO öffnen</a></p>
-    </div>
-
-    <div id="tradingApp" class="screen">
-      <button class="back-btn" onclick="goHome()">⬅ Home</button>
+    <!-- Chart -->
+    <div id="chartApp" class="screen">
+      <button class="back-btn" onclick="openApp('forexApp')">⬅ Zurück</button>
       <h2>Live Forex Charts</h2>
       <div class="tv-widget-container">
         <div id="tradingview_chart" style="height:600px;"></div>
@@ -79,21 +78,46 @@
       <label for="chartPair">Währungspaar auswählen:</label>
       <select id="chartPair">
         <option value="OANDA:EURUSD">EUR/USD</option>
-        <option value="OANDA:USDJPY">USD/JPY</option>
         <option value="OANDA:GBPUSD">GBP/USD</option>
+        <option value="OANDA:USDJPY">USD/JPY</option>
         <option value="OANDA:USDCHF">USD/CHF</option>
-        <option value="OANDA:AUDUSD">AUD/USD</option>
-        <option value="OANDA:USDCAD">USD/CAD</option>
-        <option value="OANDA:NZDUSD">NZD/USD</option>
-        <option value="OANDA:EURJPY">EUR/JPY</option>
-        <option value="OANDA:GBPJPY">GBP/JPY</option>
-        <option value="OANDA:EURGBP">EUR/GBP</option>
       </select>
       <button onclick="updateChartSymbol()">Chart aktualisieren</button>
     </div>
+
+    <!-- FTMO -->
+    <div id="ftmoApp" class="screen">
+      <button class="back-btn" onclick="openApp('forexApp')">⬅ Zurück</button>
+      <h2>FTMO Account</h2>
+      <p><a href="https://trader.ftmo.com/accounts-overview" target="_blank" class="external-link">FTMO öffnen</a></p>
+    </div>
+
+    <!-- NVIDIA Trading -->
+    <div id="nvidiaApp" class="screen">
+      <button class="back-btn" onclick="goHome()">⬅ Zurück</button>
+      <h2>Nvidia Trading</h2>
+      <div class="tabs">
+        <button class="tab-btn active" onclick="openTab(event, 'nvidiaPreis')">Aktueller Preis</button>
+        <button class="tab-btn" onclick="openTab(event, 'nvidiaNews')">News</button>
+        <button class="tab-btn" onclick="openTab(event, 'nvidiaBot')">Bot</button>
+      </div>
+
+      <div id="nvidiaPreis" class="tab-content active">
+        <p><a href="https://www.ls-tc.de/de/aktie/nvidia-dl-01-aktie" target="_blank" class="external-link">Preis auf LSX anzeigen</a></p>
+      </div>
+
+      <div id="nvidiaNews" class="tab-content">
+        <p><a href="https://www.finanzen.net/nachricht/aktien/nvidia-news" target="_blank" class="external-link">Nvidia News anzeigen</a></p>
+      </div>
+
+      <div id="nvidiaBot" class="tab-content">
+        <p><a href="https://chat.openai.com/" target="_blank" class="external-link">Bot öffnen</a></p>
+      </div>
+    </div>
   </main>
 
-  <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+  <script src="https://s3.tradingview.com/tv.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
+
