@@ -40,7 +40,6 @@
           <option value="USD/CHF">USD/CHF</option>
         </select>
       </label>
-
       <label>Gewünschter Verlust (in EUR/USD):
         <input type="number" id="slValue" placeholder="z. B. 100">
         <select id="slCurrency">
@@ -48,7 +47,6 @@
           <option value="USD">USD</option>
         </select>
       </label>
-
       <label>Abstand zum aktuellen Kurs:
         <input type="number" id="slDistance" placeholder="z. B. 0.5">
         <select id="slType">
@@ -56,7 +54,6 @@
           <option value="pips">Pips</option>
         </select>
       </label>
-
       <button onclick="calculateSL()">Berechnen</button>
       <div id="result"></div>
     </div>
@@ -99,7 +96,7 @@
       <div class="tabs">
         <button class="tab-btn active" onclick="openTab(event, 'nvidiaPreis')">Aktueller Preis</button>
         <button class="tab-btn" onclick="openTab(event, 'nvidiaNews')">News</button>
-        <button class="tab-btn" onclick="openTab(event, 'nvidiaBot')">Bot</button>
+        <button class="tab-btn" onclick="openTab(event, 'nvidiaRechner')">Rechner</button>
       </div>
 
       <div id="nvidiaPreis" class="tab-content active">
@@ -107,11 +104,40 @@
       </div>
 
       <div id="nvidiaNews" class="tab-content">
-        <p><a href="https://www.finanzen.net/nachricht/aktien/nvidia-news" target="_blank" class="external-link">Nvidia News anzeigen</a></p>
+        <p><a href="https://www.finanzen.net/news/nvidia-news" target="_blank" class="external-link">Nvidia News anzeigen</a></p>
       </div>
 
-      <div id="nvidiaBot" class="tab-content">
-        <p><a href="https://chat.openai.com/" target="_blank" class="external-link">Bot öffnen</a></p>
+      <!-- NVIDIA Trading Rechner -->
+      <div id="nvidiaRechner" class="tab-content">
+        <form id="nvidiaOrderForm" autocomplete="off" onsubmit="event.preventDefault(); calculateNvidiaOrders();">
+          <h3>Order Rechner</h3>
+          <div>
+            <label>Kapital (EUR/USD):
+              <input type="number" min="0.01" id="kapitalInput" value="1000" step="0.01" required>
+            </label>
+          </div>
+          <hr style="margin:1rem 0;">
+          <div>
+            <label>Anzahl Buy-Orders:
+              <input type="number" min="1" id="numBuyOrders" value="1" required>
+            </label>
+            <label style="margin-left:1em;">
+              <input type="checkbox" id="autoBuyPercent" onclick="autoFillBuyPercents()"> Prozent gleichmäßig aufteilen
+            </label>
+            <div id="buyOrdersContainer"></div>
+          </div>
+          <div>
+            <label>Anzahl Sell-Orders:
+              <input type="number" min="1" id="numSellOrders" value="1" required>
+            </label>
+            <label style="margin-left:1em;">
+              <input type="checkbox" id="autoSellPercent" onclick="autoFillSellPercents()"> Prozent gleichmäßig aufteilen
+            </label>
+            <div id="sellOrdersContainer"></div>
+          </div>
+          <button type="submit">Berechnen</button>
+          <div id="nvidiaOrderResult"></div>
+        </form>
       </div>
     </div>
   </main>
@@ -120,4 +146,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-
