@@ -158,3 +158,33 @@ button:hover {
   border-radius: 5px;
 }
 
+#nvidiaRechner form {
+  background: #222;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+#nvidiaRechner label {
+  margin-bottom: 0.5rem;
+  display: block;
+}
+#nvidiaRechner input[type="number"] {
+  margin-bottom: 0.5rem;
+}
+#nvidiaOrderResult {
+  margin-top: 1rem;
+  background: #181818;
+  padding: 0.8rem;
+  border-radius: 6px;
+  min-height: 2rem;
+}
+#nvidiaOrderForm table th, #nvidiaOrderForm table td {
+  border: 1px solid #333;
+  padding: 4px 8px;
+}
+
+#nvidiaOrderForm table th, #nvidiaOrderForm table td {
+  border: 1px solid #333;
+  padding: 4px 8px;
+}
+
