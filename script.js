@@ -1,4 +1,4 @@
-// Forex Sessions
+// Forex Sessions (unverändert)
 const sessionTimes = [
   { name: 'Sydney', open: 22, close: 7 },
   { name: 'Tokyo', open: 1, close: 10 },
@@ -29,26 +29,41 @@ function updateSessions() {
   });
 }
 
-// Tabs in Nvidia App
+// Tabs in Nvidia App (angepasst für dynamische Felder)
 function openTab(evt, tabId) {
   document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
 
   evt.currentTarget.classList.add('active');
   document.getElementById(tabId).classList.add('active');
+
+  // Wenn Nvidia Rechner Tab aktiv, Felder aufbauen
+  if(tabId === 'nvidiaRechner') {
+    updateOrderInputs();
+    if(document.getElementById('autoBuyPercent').checked) autoFillBuyPercents();
+    if(document.getElementById('autoSellPercent').checked) autoFillSellPercents();
+  }
 }
 
-// Navigation
+// Navigation (angepasst)
 function openApp(id) {
   document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+  // Wenn Nvidia Trading aktiv und Rechner-Tab aktiv, Felder initialisieren:
+  if(id === 'nvidiaApp') {
+    if(document.querySelector('.tab-btn.active') && document.querySelector('.tab-btn.active').textContent.includes('Rechner')) {
+      updateOrderInputs();
+      if(document.getElementById('autoBuyPercent').checked) autoFillBuyPercents();
+      if(document.getElementById('autoSellPercent').checked) autoFillSellPercents();
+    }
+  }
 }
 function goHome() {
   document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
   document.getElementById('home').classList.add('active');
 }
 
-// SL Rechner (korrigiert mit validierung und Ausgabe in Lots)
+// SL Rechner (unverändert)
 function calculateSL() {
   const slValue = parseFloat(document.getElementById('slValue').value);
   const slDistance = parseFloat(document.getElementById('slDistance').value);
@@ -58,7 +73,6 @@ function calculateSL() {
   const resultDiv = document.getElementById('result');
   resultDiv.textContent = '';
 
-  // Validation
   if (
     isNaN(slValue) || slValue <= 0 ||
     isNaN(slDistance) || slDistance <= 0
@@ -67,12 +81,8 @@ function calculateSL() {
     return;
   }
 
-  // PIP-Größe ermitteln
   let pipSize = pair.includes("JPY") ? 0.01 : 0.0001;
-
-  // Standardwert: ca. 10 USD/EUR pro Pip pro Lot
   const pipValuePerLot = 10;
-
   const totalRiskPerLot = slDistance * pipValuePerLot;
   const lots = slValue / totalRiskPerLot;
 
@@ -84,7 +94,7 @@ function calculateSL() {
   resultDiv.innerHTML = `Empfohlene Positionsgröße: <strong>${lots.toFixed(2)} Lots</strong>`;
 }
 
-// Chart init
+// Chart init (unverändert)
 let widget;
 function updateChartSymbol() {
   const selectedSymbol = document.getElementById('chartPair').value;
@@ -108,14 +118,9 @@ function updateChartSymbol() {
   });
 }
 
-// Initialisierung
-window.addEventListener('DOMContentLoaded', () => {
-  updateSessions();
-  setInterval(updateSessions, 60000);
-  updateChartSymbol();
-});
-
-// Dynamische Order Inputs für Nvidia Rechner
+// -------------------------
+// NVidia Order Rechner Logic
+// -------------------------
 function updateOrderInputs() {
   const buyCount = parseInt(document.getElementById('numBuyOrders').value) || 1;
   const sellCount = parseInt(document.getElementById('numSellOrders').value) || 1;
@@ -153,7 +158,6 @@ function updateOrderInputs() {
   }
 }
 
-// Prozent für Buy Orders automatisch aufteilen oder zurücksetzen
 function autoFillBuyPercents() {
   const buyCount = parseInt(document.getElementById('numBuyOrders').value) || 1;
   const checked = document.getElementById('autoBuyPercent').checked;
@@ -161,7 +165,6 @@ function autoFillBuyPercents() {
     document.getElementById(`buyPercent${i}`).value = checked ? (100 / buyCount).toFixed(2) : '';
   }
 }
-// Prozent für Sell Orders automatisch aufteilen oder zurücksetzen
 function autoFillSellPercents() {
   const sellCount = parseInt(document.getElementById('numSellOrders').value) || 1;
   const checked = document.getElementById('autoSellPercent').checked;
@@ -170,7 +173,6 @@ function autoFillSellPercents() {
   }
 }
 
-// Berechnung für Nvidia Order Rechner
 function calculateNvidiaOrders() {
   const kapital = parseFloat(document.getElementById('kapitalInput').value) || 0;
   const buyCount = parseInt(document.getElementById('numBuyOrders').value) || 1;
@@ -178,14 +180,12 @@ function calculateNvidiaOrders() {
   let buyTotal = 0, sellTotal = 0;
   let buyOrders = [], sellOrders = [];
 
-  // Buy Orders Daten
   for (let i = 1; i <= buyCount; i++) {
     const percent = parseFloat(document.getElementById(`buyPercent${i}`).value) || 0;
     const price = parseFloat(document.getElementById(`buyPrice${i}`).value) || 0;
     buyOrders.push({percent, price});
     buyTotal += percent;
   }
-  // Sell Orders Daten
   for (let i = 1; i <= sellCount; i++) {
     const percent = parseFloat(document.getElementById(`sellPercent${i}`).value) || 0;
     const price = parseFloat(document.getElementById(`sellPrice${i}`).value) || 0;
@@ -194,8 +194,6 @@ function calculateNvidiaOrders() {
   }
 
   let resultHTML = "";
-
-  // Validation
   let error = "";
   if (!kapital || kapital <= 0) error += `<div style="color:#ff5b5b">Kapital muss > 0 sein.</div>`;
   if (buyTotal !== 100) error += `<div style="color:#ff5b5b">Buy Orders ergeben nicht 100% (aktuell: ${buyTotal}%)</div>`;
@@ -208,43 +206,56 @@ function calculateNvidiaOrders() {
     return;
   }
 
-  // Buy-Gesamteinstieg (gewichteter Durchschnitt)
   let buyEntry = buyOrders.reduce((sum, o) => sum + (o.percent * o.price / 100), 0);
-  // Sell-Gesamtausgang (gewichteter Durchschnitt)
   let sellExit = sellOrders.reduce((sum, o) => sum + (o.percent * o.price / 100), 0);
-
-  // Positionsgröße = Kapital / BuyEntry
   let positionSize = kapital / buyEntry;
-
-  // Gewinn = (SellGesamt - BuyGesamt) * PositionSize
-    let profit = (sellExit - buyEntry) * positionSize;
+  let profit = (sellExit - buyEntry) * positionSize;
   let kosten = buyCount + sellCount;
   let profitNachKosten = profit - kosten;
 
   resultHTML += `<table style="width:100%;margin-top:.5rem;border-collapse:collapse;">
     <tr><th style="text-align:left;">Buy Gesamteinstieg</th><td>${buyEntry.toFixed(4)}</td></tr>
-    <tr><th style="text-align:left;">Sell Gesamtaustieg</th><td>${sellExit.toFixed(4)}</td></tr>
+    <tr><th style="text-align:left;">Sell Gesamtausgang</th><td>${sellExit.toFixed(4)}</td></tr>
     <tr><th style="text-align:left;">Positionsgröße</th><td>${positionSize.toFixed(4)}</td></tr>
-    <tr><th style="text-align:left;">Profit</th><td style="color:#4eaaff;font-weight:bold;">${profit.toFixed(2)}</td></tr>
+    <tr><th style="text-align:left;">Gewinn (Profit)</th><td style="color:#4eaaff;font-weight:bold;">${profit.toFixed(2)}</td></tr>
     <tr><th style="text-align:left;">Profit nach Ausführungskosten</th><td style="color:#30e473;font-weight:bold;">${profitNachKosten.toFixed(2)}</td></tr>
   </table>`;
-
 
   document.getElementById("nvidiaOrderResult").innerHTML = resultHTML;
 }
 
-// Initialisierung Events
+// Initialisierung
 document.addEventListener('DOMContentLoaded', () => {
+  updateSessions();
+  setInterval(updateSessions, 60000);
+  updateChartSymbol();
+
+  // --- NVidia Rechner Inputs initialisieren ---
   if (document.getElementById('numBuyOrders')) {
     updateOrderInputs();
     document.getElementById('numBuyOrders').addEventListener('input', function(){
       updateOrderInputs();
       if(document.getElementById('autoBuyPercent').checked) autoFillBuyPercents();
     });
+    document.getElementById('numBuyOrders').addEventListener('change', function(){
+      updateOrderInputs();
+      if(document.getElementById('autoBuyPercent').checked) autoFillBuyPercents();
+    });
+
     document.getElementById('numSellOrders').addEventListener('input', function(){
       updateOrderInputs();
       if(document.getElementById('autoSellPercent').checked) autoFillSellPercents();
     });
+    document.getElementById('numSellOrders').addEventListener('change', function(){
+      updateOrderInputs();
+      if(document.getElementById('autoSellPercent').checked) autoFillSellPercents();
+    });
+  }
+
+  // Falls beim Laden schon der Nvidia Rechner aktiv ist:
+  if (document.getElementById('nvidiaRechner').classList.contains('active')) {
+    updateOrderInputs();
+    if(document.getElementById('autoBuyPercent').checked) autoFillBuyPercents();
+    if(document.getElementById('autoSellPercent').checked) autoFillSellPercents();
   }
 });
-
