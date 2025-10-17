@@ -15,17 +15,10 @@ header {
   border-bottom: 2px solid #333;
 }
 
-main {
-  padding: 1rem;
-}
+main { padding: 1rem; }
 
-.screen {
-  display: none;
-}
-
-.screen.active {
-  display: block;
-}
+.screen { display: none; }
+.screen.active { display: block; }
 
 .app {
   background-color: #2c2c2c;
@@ -38,16 +31,9 @@ main {
   transition: background 0.3s;
   border: 1px solid #444;
 }
+.app:hover { background-color: #3d3d3d; }
 
-.app:hover {
-  background-color: #3d3d3d;
-}
-
-label {
-  display: block;
-  margin: 1rem 0 0.5rem;
-  font-weight: bold;
-}
+label { display: block; margin: 1rem 0 0.5rem; font-weight: bold; }
 
 input, select {
   padding: 0.5rem;
@@ -72,146 +58,63 @@ button {
   font-weight: bold;
   transition: background 0.3s;
 }
+button:hover { background-color: #77c8ff; }
 
-button:hover {
-  background-color: #77c8ff;
-}
-
-.back-btn {
-  background-color: #555;
-  color: white;
-  margin-bottom: 1rem;
-}
+.back-btn { background-color: #555; color: white; margin-bottom: 1rem; }
 
 .sessions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 1rem;
+  display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 1rem;
 }
-
 .session {
   background-color: #222;
   padding: 0.5rem 1rem;
   border-radius: 5px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
+  display: flex; align-items: center; gap: 5px;
   font-size: 0.9rem;
 }
+.status { width: 10px; height: 10px; border-radius: 50%; }
 
-.status {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-}
+.external-link { color: #4eaaff; text-decoration: none; font-weight: bold; }
+.external-link:hover { text-decoration: underline; }
 
-.external-link {
-  color: #4eaaff;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.external-link:hover {
-  text-decoration: underline;
-}
-
-/* Tabs for Nvidia */
-.tabs {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 1rem;
-}
-
+/* Tabs (Aktien Trading) */
+.tabs { display: flex; gap: 0.5rem; margin-top: 1rem; }
 .tab-btn {
-  padding: 0.7rem 1.2rem;
-  background: #333;
-  border: none;
-  color: #eee;
-  cursor: pointer;
-  border-radius: 8px 8px 0 0;
-  font-weight: bold;
+  padding: 0.7rem 1.2rem; background: #333; border: none; color: #eee;
+  cursor: pointer; border-radius: 8px 8px 0 0; font-weight: bold;
 }
-
-.tab-btn.active {
-  background: #4eaaff;
-  color: #000;
-}
-
+.tab-btn.active { background: #4eaaff; color: #000; }
 .tab-content {
-  display: none;
-  background: #1e1e1e;
-  padding: 1rem;
-  border: 1px solid #333;
-  border-radius: 0 8px 8px 8px;
+  display: none; background: #1e1e1e; padding: 1rem; border: 1px solid #333; border-radius: 0 8px 8px 8px;
 }
-
-.tab-content.active {
-  display: block;
-}
+.tab-content.active { display: block; }
 
 #result {
-  margin-top: 1rem;
-  padding: 1rem;
-  background-color: #222;
-  border: 1px solid #333;
-  border-radius: 5px;
+  margin-top: 1rem; padding: 1rem; background-color: #222; border: 1px solid #333; border-radius: 5px;
 }
 
-#nvidiaRechner form {
-  background: #222;
-  padding: 1rem;
-  border-radius: 8px;
-  margin-top: 1rem;
+/* Aktien-Rechner */
+#stocksRechner form {
+  background: #222; padding: 1rem; border-radius: 8px; margin-top: 1rem;
 }
-#nvidiaRechner label {
-  margin-bottom: 0.5rem;
-  display: block;
+#stocksRechner label { margin-bottom: 0.5rem; display: block; }
+#stocksRechner input[type="number"] { margin-bottom: 0.5rem; }
+#stockOrderResult {
+  margin-top: 1rem; background: #181818; padding: 0.8rem; border-radius: 6px; min-height: 2rem;
 }
-#nvidiaRechner input[type="number"] {
-  margin-bottom: 0.5rem;
-}
-#nvidiaOrderResult {
-  margin-top: 1rem;
-  background: #181818;
-  padding: 0.8rem;
-  border-radius: 6px;
-  min-height: 2rem;
-}
-#nvidiaOrderForm table th, #nvidiaOrderForm table td {
-  border: 1px solid #333;
-  padding: 4px 8px;
+#stockOrderForm table th, #stockOrderForm table td {
+  border: 1px solid #333; padding: 4px 8px;
 }
 
-#nvidiaOrderForm table th, #nvidiaOrderForm table td {
-  border: 1px solid #333;
-  padding: 4px 8px;
+#stocksRechner input[type="number"],
+#stocksRechner input[type="checkbox"] {
+  font-size: 1.2em; padding: 0.7em; min-width: 80px;
 }
-
-#nvidiaRechner input[type="number"],
-#nvidiaRechner input[type="checkbox"] {
-  font-size: 1.2em;
-  padding: 0.7em;
-  min-width: 80px;
-}
-
-#nvidiaRechner label {
-  margin-bottom: 0.7rem;
-  display: inline-block;
-}
-
-#nvidiaOrderForm table th, #nvidiaOrderForm table td {
-  border: 1px solid #333;
-  padding: 4px 8px;
-}
+#stocksRechner label { margin-bottom: 0.7rem; display: inline-block; }
 
 @media (max-width: 600px) {
-  #nvidiaRechner input[type="number"] {
-    min-width: 100px;
-    font-size: 1.15em;
+  #stocksRechner input[type="number"] {
+    min-width: 100px; font-size: 1.15em;
   }
-  #nvidiaRechner label {
-    display: block;
-    width: 100%;
-  }
+  #stocksRechner label { display: block; width: 100%; }
 }
