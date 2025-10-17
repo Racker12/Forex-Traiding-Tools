@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Trading Tools</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Chart.js für Seasonal Trends -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 <body>
   <header>
@@ -13,9 +16,11 @@
   </header>
 
   <main>
+    <!-- Home -->
     <div id="home" class="screen active">
-      <div class="app" onclick="openApp('nvidiaApp')">Nvidia Trading</div>
+      <div class="app" onclick="openApp('stocksApp')">Aktien Trading</div>
       <div class="app" onclick="openApp('forexApp')">Forex Trading</div>
+      <div class="app" onclick="openApp('seasonalApp')">Seasonal Trends</div>
     </div>
 
     <!-- Forex -->
@@ -41,14 +46,14 @@
         </select>
       </label>
       <label>Gewünschter Verlust (in EUR/USD):
-        <input type="number" id="slValue" placeholder="z. B. 100">
+        <input type="number" id="slValue" placeholder="z. B. 100">
         <select id="slCurrency">
           <option value="EUR">EUR</option>
           <option value="USD">USD</option>
         </select>
       </label>
       <label>Abstand zum aktuellen Kurs:
-        <input type="number" id="slDistance" placeholder="z. B. 0.5">
+        <input type="number" id="slDistance" placeholder="z. B. 0.5">
         <select id="slType">
           <option value="percent">Prozent</option>
           <option value="pips">Pips</option>
@@ -89,27 +94,27 @@
       <p><a href="https://trader.ftmo.com/accounts-overview" target="_blank" class="external-link">FTMO öffnen</a></p>
     </div>
 
-    <!-- NVIDIA Trading -->
-    <div id="nvidiaApp" class="screen">
+    <!-- Aktien Trading -->
+    <div id="stocksApp" class="screen">
       <button class="back-btn" onclick="goHome()">⬅ Zurück</button>
-      <h2>Nvidia Trading</h2>
+      <h2>Aktien Trading</h2>
       <div class="tabs">
-        <button class="tab-btn active" onclick="openTab(event, 'nvidiaPreis')">Aktueller Preis</button>
-        <button class="tab-btn" onclick="openTab(event, 'nvidiaNews')">News</button>
-        <button class="tab-btn" onclick="openTab(event, 'nvidiaRechner')">Rechner</button>
+        <button class="tab-btn active" onclick="openTab(event, 'stocksPreis')">Aktueller Preis</button>
+        <button class="tab-btn" onclick="openTab(event, 'stocksNews')">News</button>
+        <button class="tab-btn" onclick="openTab(event, 'stocksRechner')">Rechner</button>
       </div>
 
-      <div id="nvidiaPreis" class="tab-content active">
+      <div id="stocksPreis" class="tab-content active">
         <p><a href="https://www.ls-tc.de/de/aktie/nvidia-dl-01-aktie" target="_blank" class="external-link">Preis auf LSX anzeigen</a></p>
       </div>
 
-      <div id="nvidiaNews" class="tab-content">
-        <p><a href="https://www.finanzen.net/news/nvidia-news" target="_blank" class="external-link">Nvidia News anzeigen</a></p>
+      <div id="stocksNews" class="tab-content">
+        <p><a href="https://www.finanzen.net/news/nvidia-news" target="_blank" class="external-link">NVIDIA News anzeigen</a></p>
       </div>
 
-      <!-- NVIDIA Trading Rechner -->
-      <div id="nvidiaRechner" class="tab-content">
-        <form id="nvidiaOrderForm" autocomplete="off" onsubmit="event.preventDefault(); calculateNvidiaOrders();">
+      <!-- Aktien Trading Rechner -->
+      <div id="stocksRechner" class="tab-content">
+        <form id="stockOrderForm" autocomplete="off" onsubmit="event.preventDefault(); calculateStockOrders();">
           <h3>Order Rechner</h3>
           <div>
             <label>Kapital (EUR/USD):
@@ -136,13 +141,25 @@
             <div id="sellOrdersContainer"></div>
           </div>
           <button type="submit">Berechnen</button>
-          <div id="nvidiaOrderResult"></div>
+          <div id="stockOrderResult"></div>
         </form>
       </div>
     </div>
+
+    <!-- Seasonal Trends -->
+    <div id="seasonalApp" class="screen">
+      <button class="back-btn" onclick="goHome()">⬅ Zurück</button>
+      <h2>Seasonal Trends</h2>
+      <div id="seasonalContainer"></div>
+      <p class="muted"> - SchnegNivek <code> </code></p>
+    </div>
   </main>
 
+  <!-- TradingView -->
   <script src="https://s3.tradingview.com/tv.js"></script>
+  <!-- Seasonal Trends Modul -->
+  <script src="seasonal-embed.js"></script>
+  <!-- Haupt-Script -->
   <script src="script.js"></script>
 </body>
 </html>
