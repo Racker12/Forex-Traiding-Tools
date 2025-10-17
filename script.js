@@ -1,8 +1,10 @@
-// Forex Sessions (unverändert)
+// ==============================
+// Sessions (Forex) – Anzeige
+// ==============================
 const sessionTimes = [
   { name: 'Sydney', open: 22, close: 7 },
-  { name: 'Tokyo', open: 1, close: 10 },
-  { name: 'London', open: 8, close: 17 },
+  { name: 'Tokyo', open: 1,  close: 10 },
+  { name: 'London', open: 8,  close: 17 },
   { name: 'New York', open: 13, close: 22 }
 ];
 
@@ -13,6 +15,7 @@ function updateSessions() {
   const localTime = localHour + localMin / 60;
 
   const sessionsDiv = document.getElementById('sessions');
+  if (!sessionsDiv) return;
   sessionsDiv.innerHTML = '';
 
   sessionTimes.forEach(session => {
@@ -29,59 +32,60 @@ function updateSessions() {
   });
 }
 
-// Tabs in Nvidia App (angepasst für dynamische Felder)
+// ==============================
+// Navigation (Screens/Tabs)
+// ==============================
+function openApp(id) {
+  document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+  document.getElementById(id)?.classList.add('active');
+
+  // Falls Aktien-Trading offen und Rechner-Tab aktiv, Inputs initialisieren
+  if (id === 'stocksApp') {
+    if (document.querySelector('.tab-btn.active')?.textContent.includes('Rechner')) {
+      updateOrderInputs();
+      if (document.getElementById('autoBuyPercent')?.checked) autoFillBuyPercents();
+      if (document.getElementById('autoSellPercent')?.checked) autoFillSellPercents();
+    }
+  }
+}
+
+function goHome() {
+  document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+  document.getElementById('home')?.classList.add('active');
+}
+
 function openTab(evt, tabId) {
   document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
 
   evt.currentTarget.classList.add('active');
-  document.getElementById(tabId).classList.add('active');
+  document.getElementById(tabId)?.classList.add('active');
 
-  // Wenn Nvidia Rechner Tab aktiv, Felder aufbauen
-  if(tabId === 'nvidiaRechner') {
+  if (tabId === 'stocksRechner') {
     updateOrderInputs();
-    if(document.getElementById('autoBuyPercent').checked) autoFillBuyPercents();
-    if(document.getElementById('autoSellPercent').checked) autoFillSellPercents();
+    if (document.getElementById('autoBuyPercent')?.checked) autoFillBuyPercents();
+    if (document.getElementById('autoSellPercent')?.checked) autoFillSellPercents();
   }
 }
 
-// Navigation (angepasst)
-function openApp(id) {
-  document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  // Wenn Nvidia Trading aktiv und Rechner-Tab aktiv, Felder initialisieren:
-  if(id === 'nvidiaApp') {
-    if(document.querySelector('.tab-btn.active') && document.querySelector('.tab-btn.active').textContent.includes('Rechner')) {
-      updateOrderInputs();
-      if(document.getElementById('autoBuyPercent').checked) autoFillBuyPercents();
-      if(document.getElementById('autoSellPercent').checked) autoFillSellPercents();
-    }
-  }
-}
-function goHome() {
-  document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
-  document.getElementById('home').classList.add('active');
-}
-
-// SL Rechner (unverändert)
+// ==============================
+// SL-Rechner (Forex)
+// ==============================
 function calculateSL() {
   const slValue = parseFloat(document.getElementById('slValue').value);
   const slDistance = parseFloat(document.getElementById('slDistance').value);
-  const slType = document.getElementById('slType').value;
+  const slType = document.getElementById('slType').value; // aktuell nicht verwendet
   const pair = document.getElementById('pair').value;
 
   const resultDiv = document.getElementById('result');
   resultDiv.textContent = '';
 
-  if (
-    isNaN(slValue) || slValue <= 0 ||
-    isNaN(slDistance) || slDistance <= 0
-  ) {
+  if (isNaN(slValue) || slValue <= 0 || isNaN(slDistance) || slDistance <= 0) {
     resultDiv.textContent = 'Bitte gültige Werte für Risiko und SL-Abstand eingeben.';
     return;
   }
 
-  let pipSize = pair.includes("JPY") ? 0.01 : 0.0001;
+  // einfache Annahme: 1 Lot = 10 Währungseinheiten pro Pip
   const pipValuePerLot = 10;
   const totalRiskPerLot = slDistance * pipValuePerLot;
   const lots = slValue / totalRiskPerLot;
@@ -94,7 +98,9 @@ function calculateSL() {
   resultDiv.innerHTML = `Empfohlene Positionsgröße: <strong>${lots.toFixed(2)} Lots</strong>`;
 }
 
-// Chart init (unverändert)
+// ==============================
+// TradingView Chart (Forex)
+// ==============================
 let widget;
 function updateChartSymbol() {
   const selectedSymbol = document.getElementById('chartPair').value;
@@ -118,14 +124,15 @@ function updateChartSymbol() {
   });
 }
 
-// -------------------------
-// NVidia Order Rechner Logic
-// -------------------------
+// ==============================
+// Aktien-Trading – Order Rechner
+// ==============================
 function updateOrderInputs() {
   const buyCount = parseInt(document.getElementById('numBuyOrders').value) || 1;
   const sellCount = parseInt(document.getElementById('numSellOrders').value) || 1;
   const buyContainer = document.getElementById('buyOrdersContainer');
   const sellContainer = document.getElementById('sellOrdersContainer');
+  if (!buyContainer || !sellContainer) return;
 
   // Buy Inputs
   buyContainer.innerHTML = '';
@@ -165,6 +172,7 @@ function autoFillBuyPercents() {
     document.getElementById(`buyPercent${i}`).value = checked ? (100 / buyCount).toFixed(2) : '';
   }
 }
+
 function autoFillSellPercents() {
   const sellCount = parseInt(document.getElementById('numSellOrders').value) || 1;
   const checked = document.getElementById('autoSellPercent').checked;
@@ -173,7 +181,7 @@ function autoFillSellPercents() {
   }
 }
 
-function calculateNvidiaOrders() {
+function calculateNvidiaOrders() { // Name behalten für HTML-Kompatibilität
   const kapital = parseFloat(document.getElementById('kapitalInput').value) || 0;
   const buyCount = parseInt(document.getElementById('numBuyOrders').value) || 1;
   const sellCount = parseInt(document.getElementById('numSellOrders').value) || 1;
@@ -193,7 +201,7 @@ function calculateNvidiaOrders() {
     sellTotal += percent;
   }
 
-  let resultHTML = "";
+  const resultDiv = document.getElementById("nvidiaOrderResult");
   let error = "";
   if (!kapital || kapital <= 0) error += `<div style="color:#ff5b5b">Kapital muss > 0 sein.</div>`;
   if (buyTotal !== 100) error += `<div style="color:#ff5b5b">Buy Orders ergeben nicht 100% (aktuell: ${buyTotal}%)</div>`;
@@ -201,61 +209,77 @@ function calculateNvidiaOrders() {
   if (buyOrders.some(o => o.price <= 0)) error += `<div style="color:#ff5b5b">Alle Buy-Preise müssen > 0 sein.</div>`;
   if (sellOrders.some(o => o.price <= 0)) error += `<div style="color:#ff5b5b">Alle Sell-Preise müssen > 0 sein.</div>`;
 
-  if (error) {
-    document.getElementById("nvidiaOrderResult").innerHTML = error;
-    return;
-  }
+  if (error) { resultDiv.innerHTML = error; return; }
 
-  let buyEntry = buyOrders.reduce((sum, o) => sum + (o.percent * o.price / 100), 0);
-  let sellExit = sellOrders.reduce((sum, o) => sum + (o.percent * o.price / 100), 0);
-  let positionSize = kapital / buyEntry;
-  let profit = (sellExit - buyEntry) * positionSize;
-  let kosten = buyCount + sellCount;
-  let profitNachKosten = profit - kosten;
+  const buyEntry = buyOrders.reduce((sum, o) => sum + (o.percent * o.price / 100), 0);
+  const sellExit = sellOrders.reduce((sum, o) => sum + (o.percent * o.price / 100), 0);
+  const positionSize = kapital / buyEntry;
+  const profit = (sellExit - buyEntry) * positionSize;
 
-  resultHTML += `<table style="width:100%;margin-top:.5rem;border-collapse:collapse;">
+  const kosten = buyCount + sellCount; // simple Ausführungskosten-Annahme
+  const profitNachKosten = profit - kosten;
+
+  resultDiv.innerHTML = `<table style="width:100%;margin-top:.5rem;border-collapse:collapse;">
     <tr><th style="text-align:left;">Buy Gesamteinstieg</th><td>${buyEntry.toFixed(4)}</td></tr>
     <tr><th style="text-align:left;">Sell Gesamtausgang</th><td>${sellExit.toFixed(4)}</td></tr>
     <tr><th style="text-align:left;">Positionsgröße</th><td>${positionSize.toFixed(4)}</td></tr>
     <tr><th style="text-align:left;">Gewinn (Profit)</th><td style="color:#4eaaff;font-weight:bold;">${profit.toFixed(2)}</td></tr>
     <tr><th style="text-align:left;">Profit nach Ausführungskosten</th><td style="color:#30e473;font-weight:bold;">${profitNachKosten.toFixed(2)}</td></tr>
   </table>`;
-
-  document.getElementById("nvidiaOrderResult").innerHTML = resultHTML;
 }
 
+// ==============================
 // Initialisierung
+// ==============================
 document.addEventListener('DOMContentLoaded', () => {
+  // Forex Sessions
   updateSessions();
-  setInterval(updateSessions, 60000);
+  setInterval(updateSessions, 60_000);
+
+  // TradingView
   updateChartSymbol();
 
-  // --- NVidia Rechner Inputs initialisieren ---
+  // Aktien-Rechner Felder
   if (document.getElementById('numBuyOrders')) {
     updateOrderInputs();
-    document.getElementById('numBuyOrders').addEventListener('input', function(){
+    document.getElementById('numBuyOrders').addEventListener('input', () => {
       updateOrderInputs();
-      if(document.getElementById('autoBuyPercent').checked) autoFillBuyPercents();
+      if (document.getElementById('autoBuyPercent').checked) autoFillBuyPercents();
     });
-    document.getElementById('numBuyOrders').addEventListener('change', function(){
+    document.getElementById('numSellOrders').addEventListener('input', () => {
       updateOrderInputs();
-      if(document.getElementById('autoBuyPercent').checked) autoFillBuyPercents();
-    });
-
-    document.getElementById('numSellOrders').addEventListener('input', function(){
-      updateOrderInputs();
-      if(document.getElementById('autoSellPercent').checked) autoFillSellPercents();
-    });
-    document.getElementById('numSellOrders').addEventListener('change', function(){
-      updateOrderInputs();
-      if(document.getElementById('autoSellPercent').checked) autoFillSellPercents();
+      if (document.getElementById('autoSellPercent').checked) autoFillSellPercents();
     });
   }
 
-  // Falls beim Laden schon der Nvidia Rechner aktiv ist:
-  if (document.getElementById('nvidiaRechner').classList.contains('active')) {
-    updateOrderInputs();
-    if(document.getElementById('autoBuyPercent').checked) autoFillBuyPercents();
-    if(document.getElementById('autoSellPercent').checked) autoFillSellPercents();
+  // ✅ Seasonal Trends initialisieren
+  const seasonalHost = document.getElementById('seasonalContainer');
+  if (seasonalHost && typeof initSeasonalTrends === 'function') {
+    initSeasonalTrends(seasonalHost, {
+      dataPath: './data/', // <--- Pfad zu deinen .txt Dateien
+      title: 'Seasonale Trends',
+      assets: [
+        { key: "NVD", label: "NVIDIA" },
+        { key: "AMZ", label: "Amazon" },
+        { key: "Tesla", label: "Tesla Inc" },
+        { key: "MSF", label: "Microsoft Corp" },
+        { key: "APC", label: "Apple Inc" },
+        { key: "ABEA", label: "Alphabet Inc" },
+        { key: "RheinmetallAG", label: "Rheinmetall AG" },
+        { key: "BYD", label: "BYD Co Ltd" },
+        { key: "VWCE", label: "FTSE All-World ETF" },
+        { key: "NASDAQ", label: "iShares NASDAQ 100 ETF" },
+        { key: "XAU", label: "Gold" },
+        { key: "SI", label: "Silber" },
+        { key: "PL", label: "Platin" },
+        { key: "EURUSD", label: "EUR/USD" },
+        { key: "GBPUSD", label: "GBP/USD" },
+        { key: "USDJPY", label: "USD/JPY" },
+        { key: "BTC", label: "BTC/USD" },
+        { key: "SOL", label: "SOL/USD" },
+        { key: "ETH", label: "ETH/USD" },
+      ],
+      periods: ["3","5","7","8","10","15","20","25"],
+    });
   }
 });
